@@ -103,7 +103,7 @@ export default defineEventHandler(async (event) => {
   const totalLosses = totalGames - totalWins;
 
   const winRate =
-    totalGames > 0 ? (totalWins / totalGames) * 100 : 0;
+    totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
 
   const gameTypeStats = {
     duel: {

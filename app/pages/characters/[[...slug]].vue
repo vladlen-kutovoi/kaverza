@@ -144,7 +144,7 @@ onMounted(() => {
 
     <!-- The two breakdowns share a row once there is room, stacked below
          that. No breakpoint - the track minimum decides. -->
-    <div class="grid-auto items-start" style="--min: 22rem; --gap: 2rem">
+    <div class="grid-auto items-start" style="--min: 20rem; --gap: 2rem">
       <section v-if="byGameType.length" class="flex flex-col gap-3">
         <h2 class="section-heading">За форматами</h2>
         <div class="table-wrap">

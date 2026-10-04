@@ -10,12 +10,12 @@
 const AVATAR_CHARACTERS = {
   alisa: "Аліса",
   "chorna-boroda": "Чорна Борода",
-  chupacabra: "Чупакабра",
+  chupakabra: "Чупакабра",
   "korol-artur": "Король Артур",
   loki: "Локі",
   medusa: "Медуза",
   pandora: "Пандора",
-  sinbad: "Сінбад",
+  synbad: "Синбад",
 } as const;
 
 const AVATAR_VARIANTS = [1, 2, 3] as const;

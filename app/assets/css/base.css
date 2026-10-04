@@ -49,7 +49,7 @@ h3 {
 /* Page gutter + max width; used on every route */
 .container-page {
   width: 100%;
-  max-width: 72rem;
+  max-width: 66rem;
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
@@ -61,7 +61,7 @@ h3 {
    --max  hard cap on the number of columns. The max() keeps each track
           at least a 1/--max share of the row, so no more than --max fit. */
 .grid-auto {
-  --min: 15rem;
+  --min: 10rem;
   --gap: 1rem;
   --max: 99;
 

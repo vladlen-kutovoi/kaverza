@@ -7,7 +7,7 @@
    map rather than a tight block in the corner. */
 .matrix-wrap {
   width: 100%;
-  max-height: min(36rem, 80vh);
+  max-height: min(38rem, 80vh);
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);

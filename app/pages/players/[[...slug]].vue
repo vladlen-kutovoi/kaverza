@@ -77,7 +77,7 @@ function formatChange(change: number): string {
 
     <!-- One grid for all four blocks: two per row once there is room,
          stacked below that. No breakpoint - the track minimum decides. -->
-    <div class="grid-auto items-start" style="--min: 22rem; --gap: 2rem">
+    <div class="grid-auto items-start" style="--min: 20rem; --gap: 2rem">
       <section class="flex flex-col gap-3">
         <h2 class="section-heading">Статистика</h2>
         <div class="grid-auto" style="--min: 8rem; --max: 2">
