@@ -1,0 +1,32 @@
+/* Inline link inside body copy */
+.link {
+  color: var(--accent-text);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color var(--dur);
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Nav item; .router-link-exact-active comes from NuxtLink */
+.link-nav {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition:
+    background-color var(--dur),
+    color var(--dur);
+}
+.link-nav:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.link-nav.router-link-exact-active {
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--accent-text);
+}

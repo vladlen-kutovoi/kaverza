@@ -1,0 +1,19 @@
+/* Section heading with an accent marker. The one piece of highlight
+   that repeats on every page, so the accent reads as structural
+   rather than decorative. */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.section-heading::before {
+  content: "";
+  flex: none;
+  width: 3px;
+  height: 0.9em;
+  border-radius: 999px;
+  /* Override --heading-mark on an ancestor to recolour every marker
+     inside it, e.g. to a character's own colour */
+  background: var(--heading-mark, var(--accent));
+}

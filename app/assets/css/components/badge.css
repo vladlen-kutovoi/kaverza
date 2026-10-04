@@ -1,0 +1,57 @@
+/* Small status pill - win/loss, counts, labels */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--surface-hover);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge-accent {
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  color: var(--accent-text);
+}
+.badge-success {
+  background: color-mix(in oklab, var(--success) 14%, transparent);
+  color: var(--success);
+}
+.badge-danger {
+  background: color-mix(in oklab, var(--danger) 14%, transparent);
+  color: var(--danger);
+}
+
+/* Block-level message - form results, empty warnings */
+.alert {
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9375rem;
+}
+
+.alert-success {
+  border-color: color-mix(in oklab, var(--success) 40%, transparent);
+  background: color-mix(in oklab, var(--success) 10%, transparent);
+  color: var(--success);
+}
+.alert-danger {
+  border-color: color-mix(in oklab, var(--danger) 40%, transparent);
+  background: color-mix(in oklab, var(--danger) 10%, transparent);
+  color: var(--danger);
+}
+
+/* Character identity marker - takes its colour from the db inline */
+.dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--muted);
+}

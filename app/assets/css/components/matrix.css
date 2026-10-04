@@ -1,0 +1,110 @@
+/* Character-vs-character win rate grid.
+   -------------------------------------------------------------------
+   Its own scroll box in both directions, which is what lets the head
+   row and the name column stay put: a page-level sticky row would be
+   carried off by the page scroll before the long table ran out. The
+   box takes the full width of the page, so the cells read as a heat
+   map rather than a tight block in the corner. */
+.matrix-wrap {
+  width: 100%;
+  max-height: min(36rem, 80vh);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* separate, not collapse: a collapsed border belongs to the table, so
+   it stays behind while a sticky cell travels over it */
+.matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1.25rem;
+}
+
+/* Every head carries the surface colour itself - a see-through sticky
+   cell would show the cells sliding underneath it */
+.matrix th {
+  position: sticky;
+  z-index: 1;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 1.0625rem;
+  font-weight: 500;
+}
+
+/* Column heads: the name turned on its side, so a data column stays
+   about as wide as the number in it however long the name is */
+.matrix thead th {
+  top: 0;
+  /* A floor, not a cap: a cell grows for a name longer than this */
+  height: 8.5rem;
+  padding: 0.6rem 0.3rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: bottom;
+}
+
+.matrix-vertical {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  writing-mode: vertical-rl;
+  /* vertical-rl alone reads top-down; the turn makes it read up */
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+/* The corner is sticky on both axes, so it outranks both the row it
+   sits in and the column it heads. Qualified by `th` to outweigh the
+   z-index on `.matrix th` above, which would otherwise let the column
+   heads slide over it. */
+.matrix th.matrix-corner {
+  top: 0;
+  left: 0;
+  z-index: 2;
+  border-right: 1px solid var(--line);
+}
+
+/* Row heads: names read normally here */
+.matrix tbody th {
+  left: 0;
+  padding: 0.7rem 1.1rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.matrix td {
+  min-width: 4.5rem;
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.matrix tbody tr:last-child th,
+.matrix tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* The win rate itself, tinted by how far it sits from an even split.
+   The template passes both halves in: --cell-tone picks the side,
+   --cell-weight how far out it is, and the two meet at no tint at
+   all on 50%. */
+.matrix-cell {
+  background: color-mix(
+    in oklab,
+    var(--cell-tone) calc(var(--cell-weight) * 1%),
+    transparent
+  );
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  /* there is a tooltip on this cell */
+  cursor: help;
+}
+
+/* Never met, or the character itself */
+.matrix-empty {
+  color: color-mix(in oklab, var(--muted) 60%, transparent);
+}

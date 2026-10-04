@@ -1,0 +1,55 @@
+/* --- Raw tokens ---------------------------------------------------- */
+/* Ten colours, deliberately. Softer tints are derived with color-mix()
+   at the point of use, so there is no second variable per shade. */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: page -> card -> hover */
+  --bg: #0a0a0d;
+  --surface: #15151a;
+  --surface-hover: #1f1f26;
+  --line: #2b2b34;
+
+  /* Text */
+  --text: #ededf2;
+  --muted: #989aa4;
+
+  /* Accent: `accent` fills (buttons, focus), `accent-text` reads on dark */
+  --accent: #6366f1;
+  --accent-text: #a5b4fc;
+
+  /* Status - used as text and borders, never as a solid fill */
+  --success: #4ade80;
+  --danger: #f87171;
+
+  /* Web-safe stacks only; both cover Cyrillic on Win/macOS/Linux */
+  --sans: system-ui, "Segoe UI", Roboto, Tahoma, "Helvetica Neue", Arial,
+    sans-serif;
+  --mono: Consolas, "Lucida Console", Monaco, "Courier New", monospace;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --dur: 150ms;
+}
+
+/* --- Tailwind theme ------------------------------------------------ */
+/* Exposes the tokens above as utilities: bg-surface, text-muted,
+   border-line, text-accent-text, etc. */
+@theme inline {
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-line: var(--line);
+
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+}

@@ -1,0 +1,87 @@
+* {
+  min-width: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+h3 {
+  font-size: 1.3125rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::placeholder {
+  color: var(--muted);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 35%, transparent);
+}
+
+/* Page gutter + max width; used on every route */
+.container-page {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+/* Adaptive columns with no breakpoints: wraps on its own when the track
+   no longer fits. Tune per use with inline custom properties:
+     <div class="grid-auto" style="--min: 12rem; --max: 4">
+   --min  smallest a column may get before dropping to fewer columns
+   --max  hard cap on the number of columns. The max() keeps each track
+          at least a 1/--max share of the row, so no more than --max fit. */
+.grid-auto {
+  --min: 15rem;
+  --gap: 1rem;
+  --max: 99;
+
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(
+      max(var(--min), calc((100% - (var(--max) - 1) * var(--gap)) / var(--max))),
+      1fr
+    )
+  );
+}
+
+/* Breaks a child out of .container-page to the full viewport width.
+   The layout wrapper uses overflow-x: clip so the 100vw (which counts
+   the scrollbar) cannot cause sideways scrolling. clip, not hidden -
+   hidden would make the wrapper a scroll container and break the
+   sticky header. */
+.full-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}

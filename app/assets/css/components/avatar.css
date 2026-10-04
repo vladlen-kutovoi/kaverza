@@ -1,0 +1,76 @@
+/* A player's profile picture, round and square-cropped. One knob: the
+   size, as a custom property, so a caller sets it inline rather than
+   picking from a list of variants.
+     <UiAvatar :player="player" style="--avatar-size: 4rem" />
+
+   The default lives in the var() fallback, not as a declaration on
+   .avatar - a declaration would win over the same property inherited
+   from an ancestor, which is how the picker sizes a whole grid at once.
+   --size resolves it once and inherits to the fallback below. */
+.avatar {
+  --size: var(--avatar-size, 1.75rem);
+
+  position: relative;
+  flex: none;
+  display: block;
+  overflow: hidden;
+  width: var(--size);
+  height: var(--size);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.avatar img,
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar img {
+  object-fit: cover;
+}
+
+/* Stands in until a player has a picture: their initial on the card
+   surface, at a size that tracks the circle it sits in. */
+.avatar-fallback {
+  display: grid;
+  place-items: center;
+  background: var(--surface-hover);
+  color: var(--muted);
+  font-size: calc(var(--size) * 0.45);
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* --- The picker ---------------------------------------------------- */
+/* Wraps on its own, so the number of portraits can grow without a
+   column count to update. */
+.avatar-choices {
+  --avatar-size: 3rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.avatar-choice {
+  border-radius: 50%;
+  cursor: pointer;
+  transition: box-shadow var(--dur);
+}
+
+.avatar-choice:hover {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent);
+}
+
+/* The ring is the whole state - the radio itself is visually hidden,
+   so the chosen portrait has to read as chosen on its own. */
+.avatar-choice:has(:checked) {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.avatar-choice:has(:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

@@ -1,0 +1,2 @@
+ALTER TABLE "players" ADD COLUMN "password" text DEFAULT '' NOT NULL;
+ALTER TABLE "players" ALTER COLUMN "password" DROP DEFAULT;

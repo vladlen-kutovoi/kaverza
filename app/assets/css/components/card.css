@@ -1,0 +1,50 @@
+/* The universal surface. Everything inside it is laid out with plain
+   Tailwind utilities - only the frame, the title and the footer rule
+   are worth a class. */
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  transition:
+    background-color var(--dur),
+    border-color var(--dur);
+}
+
+/* Add to a clickable card: <NuxtLink class="card card-interactive"> */
+.card-interactive {
+  cursor: pointer;
+  text-decoration: none;
+}
+.card-interactive:hover {
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--line));
+  background: var(--surface-hover);
+}
+.card-interactive:hover .card-title {
+  color: var(--accent-text);
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition: color var(--dur);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.125rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--line);
+}
+
+/* The winning side of a game. Additive - works on .card and on any
+   bordered box, e.g. the team blocks inside a game card. */
+.card-win {
+  border-color: color-mix(in oklab, var(--success) 30%, var(--line));
+  background: color-mix(in oklab, var(--success) 8%, var(--surface));
+}

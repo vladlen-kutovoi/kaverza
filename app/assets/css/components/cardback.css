@@ -1,0 +1,90 @@
+/* The printed card art, kept at the 5:7 shape of the real thing. The
+   frame holds that shape whether the image arrives or not, so a grid
+   of characters never reflows. Plain on a character page; add
+   .card-interactive to turn it into a tile on the characters list. */
+.cardback {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 5 / 7;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition:
+    background-color var(--dur),
+    border-color var(--dur);
+}
+
+.cardback img,
+.cardback-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cardback img {
+  object-fit: cover;
+}
+
+/* Stands in until a character has art: its first letter on its own
+   colour, passed down as --cardback-tint, so the tile still reads. */
+.cardback-fallback {
+  display: grid;
+  place-items: center;
+  background: color-mix(
+    in oklab,
+    var(--cardback-tint, var(--muted)) 14%,
+    var(--surface)
+  );
+  color: color-mix(in oklab, var(--cardback-tint, var(--muted)) 55%, var(--text));
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+/* Name plate across the foot of the art. Solid where the card's own
+   printed name sits, so ours replaces it instead of doubling it. */
+.cardback-label {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2.5rem 0.75rem 0.7rem;
+  background: linear-gradient(to top, var(--bg) 35%, transparent);
+}
+
+/* The art beside a block of its own content, on a character page. Grid
+   rather than flex: a stretched 5:7 box only resolves the right way
+   round - height from the block next to it, width from the ratio - when
+   grid sizes it. Flex collapses it to nothing.
+
+   The one breakpoint in the kit, because this is the one layout whose
+   two halves cannot swap round on their own: below it they stack and
+   the art falls back to a plain width. */
+.cardback-hero {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cardback-hero > .cardback {
+  width: 11rem;
+}
+
+@media (width >= 48rem) {
+  .cardback-hero {
+    grid-template-columns: auto 1fr;
+  }
+
+  /* Height first, width second - the 5:7 turns the one into the other.
+     The height arrives as a number from the page, measured off the block
+     beside it; a grid cannot size a stretched ratio box from a row whose
+     own height waits on that box. The fallback is what that block comes
+     to with one line of title over the 2x2, which is every character -
+     it only has to hold until the measurement lands. */
+  .cardback-hero > .cardback {
+    width: auto;
+    height: var(--cardback-hero-height, 18rem);
+  }
+}

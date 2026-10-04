@@ -1,0 +1,69 @@
+/* Rows of Feint card art drifting past each other behind the hero. The
+   whole slab is tilted, so the rows read as cards pushed across a table
+   rather than as a grid that happens to move. */
+.feints {
+  --feint-gap: 0.75rem;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Overhangs the frame on every side: the tilt swings the corners of the
+   rows inwards, and the overhang is what keeps them off screen. */
+.feints-rows {
+  position: absolute;
+  inset: -25% -10%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--feint-gap);
+  rotate: -7deg;
+}
+
+/* Equal shares of the height, which is where the cards get their size
+   from - a short hero gets small cards instead of fewer rows. The
+   min-height is what lets that happen: left at auto, every row would
+   stretch to the full height of a card and the shares would never
+   apply. Content width, so the drift below has a width to measure. */
+.feints-row {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  gap: var(--feint-gap);
+  width: max-content;
+  animation: feints-drift 240s linear infinite;
+}
+
+/* Every other row runs the other way, and starts a little along, so the
+   columns are never a grid for longer than the first frame. */
+.feints-row:nth-child(even) {
+  margin-inline-start: -7rem;
+  animation-direction: reverse;
+}
+
+/* Height from the row, width from the shape. The floor keeps a wide,
+   short hero - where the rows are thin and the cards would follow -
+   from running out of cards before the right edge; cover takes the crop
+   that costs. */
+.feints-row img {
+  height: 100%;
+  width: auto;
+  min-width: max(7rem, 7vw);
+  aspect-ratio: 5 / 7;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+/* One copy of the row's width. The percentage is of the pair, so half of
+   it lands one gap short of where the second copy starts. */
+@keyframes feints-drift {
+  to {
+    transform: translate3d(calc(-50% - var(--feint-gap) / 2), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feints-row {
+    animation: none;
+  }
+}

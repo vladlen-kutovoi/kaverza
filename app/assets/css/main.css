@@ -1,0 +1,29 @@
+/* ===================================================================
+   UI KIT - entry point
+   -------------------------------------------------------------------
+   tokens.css   raw CSS variables + the Tailwind theme mapping
+   base.css     element defaults
+   components/  one file per group of classes
+
+   Component files are bare (no @layer wrapper) - the `layer()` on each
+   import puts them in Tailwind's components layer, so plain utilities
+   in a template always win over a kit class.
+   =================================================================== */
+
+@import "tailwindcss";
+
+@import "./tokens.css";
+@import "./base.css" layer(base);
+
+@import "./components/button.css" layer(components);
+@import "./components/link.css" layer(components);
+@import "./components/card.css" layer(components);
+@import "./components/cardback.css" layer(components);
+@import "./components/feints.css" layer(components);
+@import "./components/avatar.css" layer(components);
+@import "./components/heading.css" layer(components);
+@import "./components/form.css" layer(components);
+@import "./components/badge.css" layer(components);
+@import "./components/table.css" layer(components);
+@import "./components/matrix.css" layer(components);
+@import "./components/feedback.css" layer(components);
