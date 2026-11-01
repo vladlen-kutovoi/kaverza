@@ -1,0 +1,98 @@
+/* Between-pages overlay: two blank cards swing in, clash in the middle
+   with a ring of light, and recoil. Each card mirrors the same keyframes
+   through --dir, so there is one animation, not a left and a right. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: color-mix(in oklab, var(--bg) 75%, transparent);
+}
+
+.loader-clash {
+  position: relative;
+  display: flex;
+  gap: 2px;
+}
+
+.loader-card {
+  --dir: -1;
+  width: 2.75rem;
+  aspect-ratio: 5 / 7;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  animation: clash 1s infinite;
+}
+
+.loader-card:last-child {
+  --dir: 1;
+}
+
+.loader-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3rem;
+  aspect-ratio: 1;
+  margin: -1.5rem 0 0 -1.5rem;
+  border: 2px solid var(--accent-text);
+  border-radius: 50%;
+  opacity: 0;
+  animation: spark 1s infinite;
+}
+
+/* Wind-up speeds into the hit, the recoil eases back out */
+@keyframes clash {
+  0%,
+  100% {
+    translate: calc(var(--dir) * 1.75rem) 0;
+    rotate: calc(var(--dir) * 10deg);
+    animation-timing-function: ease-in;
+  }
+  40% {
+    translate: 0 0;
+    rotate: 0deg;
+    border-color: var(--accent-text);
+    box-shadow: 0 0 1rem color-mix(in oklab, var(--accent) 60%, transparent);
+    animation-timing-function: ease-out;
+  }
+  55% {
+    translate: calc(var(--dir) * 0.5rem) 0;
+    rotate: calc(var(--dir) * 3deg);
+  }
+}
+
+@keyframes spark {
+  0%,
+  40% {
+    scale: 0.2;
+    opacity: 0;
+  }
+  42% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    scale: 1.5;
+    opacity: 0;
+  }
+}
+
+.loader-enter-active,
+.loader-leave-active {
+  transition: opacity var(--dur);
+}
+
+.loader-enter-from,
+.loader-leave-to {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-card,
+  .loader-spark {
+    animation-iteration-count: 1;
+  }
+}

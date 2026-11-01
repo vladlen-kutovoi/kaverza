@@ -1,0 +1,62 @@
+/* Round picks for the randomizers, four to a row. The circle holds
+   whatever the page puts in it - card art, a map number. Two states on
+   top of the plain one: .is-off for out of the draw, .is-lit for the
+   circle under the light while spinning and the winner after. */
+.roll-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 30rem;
+}
+
+.roll-option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: 100%;
+  max-width: 6rem;
+  aspect-ratio: 1;
+  justify-self: center;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color var(--dur),
+    box-shadow var(--dur),
+    filter var(--dur),
+    opacity var(--dur),
+    scale var(--dur);
+}
+
+.roll-option:hover {
+  border-color: var(--muted);
+}
+
+.roll-option:disabled {
+  cursor: default;
+}
+
+.roll-option img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.roll-option.is-off {
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+.roll-option.is-lit {
+  border-color: var(--accent-text);
+  box-shadow: 0 0 1rem color-mix(in oklab, var(--accent) 60%, transparent);
+  scale: 1.08;
+}

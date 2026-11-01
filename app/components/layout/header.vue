@@ -12,11 +12,9 @@ const links = computed(() => {
     { name: "Ігри", url: "/games" },
     { name: "Гравці", url: "/players" },
     { name: "Персонажі", url: "/characters" },
+    { name: "Обрати персонажа", url: "/random/characters" },
+    { name: "Обрати мапу", url: "/random/maps" },
   ];
-
-  if (user.value) {
-    items.push({ name: "Додати гру", url: "/add-game" });
-  }
 
   if (isAdmin.value) {
     items.push({ name: "Адмін панель", url: "/admin" });
@@ -60,6 +58,9 @@ watch(() => route.fullPath, () => (menuOpen.value = false));
 
       <div class="ml-auto hidden items-center gap-2 sm:flex">
         <template v-if="user">
+          <NuxtLink to="/add-game" class="btn btn-primary btn-sm">
+            Додати гру
+          </NuxtLink>
           <NuxtLink :to="`/players/${user.slug}`" class="link-nav gap-2">
             <UiAvatar :player="user" />
             {{ user.name }}
@@ -143,6 +144,9 @@ watch(() => route.fullPath, () => (menuOpen.value = false));
           <hr class="my-2 border-t border-line" >
 
           <template v-if="user">
+            <NuxtLink to="/add-game" class="btn btn-primary btn-sm mb-2">
+              Додати гру
+            </NuxtLink>
             <NuxtLink
               :to="`/players/${user.slug}`"
               class="link-nav flex items-center gap-2"

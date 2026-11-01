@@ -27,3 +27,5 @@
 @import "./components/table.css" layer(components);
 @import "./components/matrix.css" layer(components);
 @import "./components/feedback.css" layer(components);
+@import "./components/loader.css" layer(components);
+@import "./components/randomizer.css" layer(components);
