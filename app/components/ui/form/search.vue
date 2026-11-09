@@ -15,7 +15,10 @@ const props = defineProps<{
 const chosenOption = defineModel<SearchFieldValue>();
 
 // --- Variables --------------------------------------------------------
-const searchQuery = ref("");
+// Starts from the chosen option, so a prefilled form shows its value
+const searchQuery = ref(
+  chosenOption.value?.[props.optionLabel]?.toString() ?? "",
+);
 const dropdownVisible = ref(false);
 
 // --- Computed ---------------------------------------------------------

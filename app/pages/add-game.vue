@@ -9,14 +9,21 @@ interface TeamMember {
   character: SearchFieldValue;
 }
 
+// --- Global variables --------------------------------------------
+const route = useRoute();
+
+// /add-game?edit=<id> turns the form into an editor of that game
+const editId = route.query.edit ? Number(route.query.edit) : null;
+
 // --- Meta --------------------------------------------------------
-useHead({ title: "Додати гру" });
+useHead({ title: editId ? "Редагувати гру" : "Додати гру" });
 
 // --- API --------------------------------------------------------
-const [players, characters] = await Promise.all([
+const [players, characters, editedGame] = await Promise.all([
   // Hidden players are still valid opponents, so the picker asks for them
   $fetch("/api/players", { query: { includeHidden: "true" } }),
   $fetch("/api/characters"),
+  editId ? $fetch(`/api/games/${editId}`) : null,
 ]);
 
 // --- Variables ---------------------------------------------------
@@ -38,7 +45,10 @@ const gameTypes: { id: GameType; name: string; type: GameType }[] = [
   },
 ];
 
-const chosenType = ref(gameTypes[0]!);
+const chosenType = ref(
+  gameTypes.find((gameType) => gameType.type === editedGame?.type) ??
+    gameTypes[0]!,
+);
 const teams = ref<TeamMember[][]>([]);
 const error = ref("");
 const isLoading = ref(false);
@@ -110,20 +120,22 @@ const submitGame = async () => {
 
   try {
     isLoading.value = true;
-    const created = await $fetch("/api/games", {
-      method: "POST",
-      body: {
-        type: chosenType.value.type,
-        winningTeamNumber: 1,
-        players: members.map((member) => ({
-          playerId: Number(member.player!.id),
-          characterId: Number(member.character!.id),
-          teamNumber: member.teamNumber,
-        })),
-      },
-    });
 
-    await navigateTo(`/games/${created.game.id}`);
+    const body = {
+      type: chosenType.value.type,
+      winningTeamNumber: 1,
+      players: members.map((member) => ({
+        playerId: Number(member.player!.id),
+        characterId: Number(member.character!.id),
+        teamNumber: member.teamNumber,
+      })),
+    };
+
+    const gameId = editedGame
+      ? (await $fetch(`/api/games/${editedGame.id}`, { method: "PUT", body })).id
+      : (await $fetch("/api/games", { method: "POST", body })).game.id;
+
+    await navigateTo(`/games/${gameId}`);
   } catch (e: unknown) {
     error.value =
       setErrors(e) ??
@@ -143,11 +155,26 @@ watch(
   },
   { immediate: true },
 );
+
+// Runs after the immediate watcher above, so it isn't wiped. The winner
+// goes first - the form saves the first team as the winning one
+if (editedGame) {
+  teams.value = [...editedGame.teams]
+    .sort((a, b) => Number(b.winner) - Number(a.winner))
+    .map((team) =>
+      team.players.map((player) => ({
+        player: players.find((option) => option.id === player.id) ?? null,
+        character:
+          characters.find((option) => option.id === player.character.id) ??
+          null,
+      })),
+    );
+}
 </script>
 <template>
   <div class="mx-auto flex w-full max-w-2xl flex-col gap-6">
     <div>
-      <h1>Додати гру</h1>
+      <h1>{{ editedGame ? "Редагувати гру" : "Додати гру" }}</h1>
       <p class="mt-1 text-base text-muted">
         Першою вказується сторона, що перемогла.
       </p>

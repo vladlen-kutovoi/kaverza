@@ -1,9 +1,14 @@
 <script setup lang="ts">
 // --- Global variables ---------------------------------------------------
 const route = useRoute();
+const { isAdmin } = useAuth();
 
 // -- API -----------------------------------------------------------------
 const { data: game } = await useFetch(`/api/games/${route.params.slug}`);
+
+// --- Variables ----------------------------------------------------------
+const isDeleting = ref(false);
+const deleteError = ref("");
 
 // --- Meta ---------------------------------------------------------------
 useHead({
@@ -15,6 +20,26 @@ function calcRatingChange(before: number, after: number): string {
   const change = after - before;
   return change > 0 ? `+${change}` : `${change}`;
 }
+
+async function deleteGame() {
+  if (!game.value) return;
+
+  if (!confirm("Видалити гру? Рейтинги наступних ігор буде перераховано.")) {
+    return;
+  }
+
+  deleteError.value = "";
+
+  try {
+    isDeleting.value = true;
+    await $fetch(`/api/games/${game.value.id}`, { method: "DELETE" });
+    await navigateTo("/games");
+  } catch {
+    deleteError.value = "Не вдалося видалити гру";
+  } finally {
+    isDeleting.value = false;
+  }
+}
 </script>
 <template>
   <div v-if="game" class="flex flex-col gap-6">
@@ -23,7 +48,21 @@ function calcRatingChange(before: number, after: number): string {
         <h1>{{ getGameName(game.type) }}</h1>
         <p class="mt-1 text-base text-muted">{{ formatDate(game.createdAt) }}</p>
       </div>
-      <NuxtLink to="/games" class="btn btn-secondary btn-sm">Усі ігри</NuxtLink>
+      <div class="flex flex-wrap gap-2">
+        <template v-if="isAdmin">
+          <NuxtLink :to="`/add-game?edit=${game.id}`" class="btn btn-secondary btn-sm">
+            Редагувати
+          </NuxtLink>
+          <UiButton variant="ghost" size="sm" :loading="isDeleting" @click="deleteGame">
+            Видалити
+          </UiButton>
+        </template>
+        <NuxtLink to="/games" class="btn btn-secondary btn-sm">Усі ігри</NuxtLink>
+      </div>
+    </div>
+
+    <div v-if="deleteError" class="alert alert-danger" role="alert">
+      {{ deleteError }}
     </div>
 
     <!-- Equal-width, equal-height tracks whatever the team count -->
